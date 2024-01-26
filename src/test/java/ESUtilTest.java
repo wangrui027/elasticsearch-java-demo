@@ -100,7 +100,7 @@ public class ESUtilTest {
                 .setAge(35)
                 .setCity("武汉")
                 .setDescription("王睿是一个java程序员，不会vue")
-                .setExtendsInfo(ImmutableMap.of("电话", 18702764000L, "手机型号", "redmi k30s"));
+                .setExtendsInfo(ImmutableMap.of("北京市", "海淀区","电话", 18702764000L, "手机型号", "redmi k30s"));
         String _id = util.save(person, "11");
         log.info("doc id: " + _id);
     }
@@ -180,10 +180,15 @@ public class ESUtilTest {
     public void search() throws IOException {
         SearchRequest searchRequest = SearchRequest.of(sr -> sr
                 .index(INDEX_NAME)
-                .q("python")
+                .q("海淀")
+                .source(s -> s
+                        .filter(f -> f
+                                .excludes("id")
+                        )
+                )
         );
         List<Person> list = util.search(searchRequest, Person.class);
-        System.out.println(list);
+        log.info(list.toString());
     }
 
 }
