@@ -512,7 +512,7 @@ public class ESUtil {
     }
 
     /**
-     * 通条件检索文档
+     * 通过条件检索文档
      *
      * @param searchRequest 检索条件
      * @param tClass        返回的对象类型
