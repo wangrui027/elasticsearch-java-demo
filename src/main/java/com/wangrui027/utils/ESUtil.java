@@ -68,6 +68,7 @@ public class ESUtil {
      */
     private String indicesName;
 
+    private final AtomicReference<ElasticsearchTransport> transport = new AtomicReference<>(null);
     /**
      * 客户端对象
      */
@@ -95,10 +96,21 @@ public class ESUtil {
                         new BasicHeader("Authorization", "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes(StandardCharsets.UTF_8))),
                 });
             }
-            ElasticsearchTransport transport = new RestClientTransport(builder.build(), new JacksonJsonpMapper());
-            client.set(new ElasticsearchClient(transport));
+            transport.set(new RestClientTransport(builder.build(), new JacksonJsonpMapper()));
+            client.set(new ElasticsearchClient(transport.get()));
         }
         return client.get();
+    }
+
+    /**
+     * 关闭 transport
+     *
+     * @throws IOException
+     */
+    public void close() throws IOException {
+        if (transport.get() != null) {
+            transport.get().close();
+        }
     }
 
     /**

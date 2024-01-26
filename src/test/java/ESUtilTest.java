@@ -6,6 +6,7 @@ import com.wangrui027.utils.ESUtil;
 import lombok.extern.slf4j.Slf4j;
 import model.Person;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,6 +38,11 @@ public class ESUtilTest {
                 .password(password)
                 .indicesName(INDEX_NAME)
         );
+    }
+
+    @AfterEach
+    public void close() throws IOException {
+        util.close();
     }
 
     @Test
