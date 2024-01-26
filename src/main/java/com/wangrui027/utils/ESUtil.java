@@ -104,8 +104,6 @@ public class ESUtil {
 
     /**
      * 关闭 transport
-     *
-     * @throws IOException
      */
     public void close() throws IOException {
         if (transport.get() != null) {
@@ -117,7 +115,6 @@ public class ESUtil {
      * ping ES 服务器
      *
      * @return 是否 ping 通
-     * @throws IOException
      */
     public boolean ping() throws IOException {
         BooleanResponse response = getClient().ping();
@@ -129,7 +126,6 @@ public class ESUtil {
      *
      * @param indicesName 索引名
      * @return 索引是否存在
-     * @throws IOException
      */
     public boolean indicesExist(String indicesName) throws IOException {
         ElasticsearchIndicesClient indicesClient = getClient().indices();
@@ -141,7 +137,6 @@ public class ESUtil {
      * 检测索引是否存在
      *
      * @return 索引是否存在
-     * @throws IOException
      */
     public boolean indicesExist() throws IOException {
         return indicesExist(indicesName);
@@ -152,7 +147,6 @@ public class ESUtil {
      *
      * @param indicesName 索引名
      * @return 索引是否创建成功
-     * @throws IOException
      */
     public boolean indicesCreate(String indicesName) throws IOException {
         return indicesCreate(indicesName, null);
@@ -162,7 +156,6 @@ public class ESUtil {
      * 创建索引
      *
      * @return 索引是否创建成功
-     * @throws IOException
      */
     public boolean indicesCreate() throws IOException {
         return indicesCreate(indicesName);
@@ -174,7 +167,6 @@ public class ESUtil {
      * @param indicesName 索引名
      * @param jsonBody    创建索引的请求 body
      * @return 索引是否创建成功
-     * @throws IOException
      */
     public boolean indicesCreateWithJson(String indicesName, String jsonBody) throws IOException {
         return indicesCreate(indicesName, jsonBody);
@@ -185,7 +177,6 @@ public class ESUtil {
      *
      * @param jsonBody 创建索引的请求 body
      * @return 索引是否创建成功
-     * @throws IOException
      */
     public boolean indicesCreateWithJson(String jsonBody) throws IOException {
         return indicesCreate(indicesName, jsonBody);
@@ -197,7 +188,6 @@ public class ESUtil {
      * @param indicesName 索引名
      * @param jsonBody    创建索引的请求 body
      * @return 索引是否创建成功
-     * @throws IOException
      */
     public boolean indicesCreate(String indicesName, String jsonBody) throws IOException {
         ElasticsearchIndicesClient indicesClient = getClient().indices();
@@ -216,7 +206,6 @@ public class ESUtil {
      *
      * @param indicesName 索引名
      * @return 索引是否删除成功
-     * @throws IOException
      */
     public boolean indicesDelete(String indicesName) throws IOException {
         ElasticsearchIndicesClient indicesClient = getClient().indices();
@@ -228,7 +217,6 @@ public class ESUtil {
      * 删除索引
      *
      * @return 索引是否删除成功
-     * @throws IOException
      */
     public boolean indicesDelete() throws IOException {
         return indicesDelete(indicesName);
@@ -240,7 +228,6 @@ public class ESUtil {
      *
      * @param indicesName 索引名
      * @return 文档总数
-     * @throws IOException
      */
     public long count(String indicesName) throws IOException {
         if (indicesName == null) {
@@ -254,7 +241,6 @@ public class ESUtil {
      * 统计索引中的文档总数
      *
      * @return 文档总数
-     * @throws IOException
      */
     public long count() throws IOException {
         return count(indicesName);
@@ -264,7 +250,6 @@ public class ESUtil {
      * 统计整个 ES 服务器中的文档总数
      *
      * @return 文档总数
-     * @throws IOException
      */
     public long countAll() throws IOException {
         CountResponse count = getClient().count();
@@ -278,7 +263,6 @@ public class ESUtil {
      * @param object      要保存的对象
      * @param id          文档 ID
      * @return 文档 ID
-     * @throws IOException
      */
     public <T> String save(String indicesName, T object, String id) throws IOException {
         IndexResponse response = getClient().index(e -> e
@@ -295,7 +279,6 @@ public class ESUtil {
      * @param indicesName 索引名
      * @param object      要保存的对象
      * @return 文档 ID
-     * @throws IOException
      */
     public <T> String save(String indicesName, T object) throws IOException {
         return save(indicesName, object, null);
@@ -306,7 +289,6 @@ public class ESUtil {
      *
      * @param object 要保存的对象
      * @return 文档 ID
-     * @throws IOException
      */
     public <T> String save(T object, String id) throws IOException {
         return save(indicesName, object, id);
@@ -317,7 +299,6 @@ public class ESUtil {
      *
      * @param object 要保存的对象
      * @return 文档 ID
-     * @throws IOException
      */
     public <T> String save(T object) throws IOException {
         return save(indicesName, object, null);
@@ -330,7 +311,6 @@ public class ESUtil {
      * @param id          文档id
      * @param object      文档对象
      * @return 是否更新成功
-     * @throws IOException
      */
     public <T> boolean update(String indicesName, String id, T object) throws IOException {
         UpdateResponse<?> response = getClient().update(UpdateRequest.of(ur -> ur
@@ -346,7 +326,6 @@ public class ESUtil {
      * @param id     文档id
      * @param object 文档对象
      * @return 是否更新成功
-     * @throws IOException
      */
     public <T> boolean update(String id, T object) throws IOException {
         return update(indicesName, id, object);
@@ -358,7 +337,6 @@ public class ESUtil {
      * @param indicesName 索引名
      * @param id          文档 ID
      * @return 文档是否删除成功
-     * @throws IOException
      */
     public boolean delete(String indicesName, String id) throws IOException {
         DeleteResponse response = getClient().delete(e -> e
@@ -373,7 +351,6 @@ public class ESUtil {
      *
      * @param id 文档 ID
      * @return 文档是否删除成功
-     * @throws IOException
      */
     public boolean delete(String id) throws IOException {
         return delete(indicesName, id);
@@ -385,7 +362,6 @@ public class ESUtil {
      * @param indicesName 索引名
      * @param ids         批量删除的文档 ID 集合
      * @return 批量操作返回对象
-     * @throws IOException
      */
     public BulkResponse delete(String indicesName, Collection<String> ids) throws IOException {
         List<BulkOperation> operations = ids.stream().map(id -> BulkOperation.of(bo -> bo
@@ -401,7 +377,6 @@ public class ESUtil {
      *
      * @param ids 批量删除的文档 ID 集合
      * @return 批量操作返回对象
-     * @throws IOException
      */
     public BulkResponse delete(Collection<String> ids) throws IOException {
         return delete(indicesName, ids);
@@ -413,7 +388,6 @@ public class ESUtil {
      * @param indicesName 索引名
      * @param list        批量保存的文档集合
      * @return 批量操作返回对象
-     * @throws IOException
      */
     public <T> BulkResponse save(String indicesName, List<T> list) throws IOException {
         return save(indicesName, list, Arrays.asList(new String[list.size()]));
@@ -426,7 +400,6 @@ public class ESUtil {
      * @param list        批量保存的文档集合
      * @param ids         批量保存的 ID 集合
      * @return 批量操作返回对象
-     * @throws IOException
      */
     public <T> BulkResponse save(String indicesName, List<T> list, List<String> ids) throws IOException {
         if (list == null || list.isEmpty()) {
@@ -456,7 +429,6 @@ public class ESUtil {
      *
      * @param operations 批量操作
      * @return 批量操作返回对象
-     * @throws IOException
      */
     public BulkResponse bulk(List<BulkOperation> operations) throws IOException {
         return getClient().bulk(BulkRequest.of(br -> br.operations(operations)));
@@ -467,7 +439,6 @@ public class ESUtil {
      *
      * @param list 批量保存的文档集合
      * @return 批量操作返回对象
-     * @throws IOException
      */
     public <T> BulkResponse save(List<T> list) throws IOException {
         return save(indicesName, list, Arrays.asList(new String[list.size()]));
@@ -479,7 +450,6 @@ public class ESUtil {
      * @param list 批量保存的文档集合
      * @param ids  批量保存的 ID 集合
      * @return 批量操作返回对象
-     * @throws IOException
      */
     public <T> BulkResponse save(List<T> list, List<String> ids) throws IOException {
         return save(indicesName, list, ids);
@@ -492,7 +462,6 @@ public class ESUtil {
      * @param id          文档 ID
      * @param tClass      返回的对象类型
      * @return 文档对象
-     * @throws IOException
      */
     public <T> T getById(String indicesName, String id, Class<T> tClass) throws IOException {
         GetResponse<T> response = getClient().get((gr -> gr.index(indicesName).id(id)), tClass);
@@ -505,19 +474,65 @@ public class ESUtil {
      * @param id     文档 ID
      * @param tClass 返回的对象类型
      * @return 文档对象
-     * @throws IOException
      */
     public <T> T getById(String id, Class<T> tClass) throws IOException {
         return getById(indicesName, id, tClass);
     }
 
     /**
-     * 通过条件检索文档
+     * <h3>通过条件检索文档</h3>
+     * <br/>
+     * <br/>
+     * q 查询，仅返回 name：
+     * <pre>
+     * SearchRequest searchRequest = SearchRequest.of(sr -> sr
+     *     .index(INDEX_NAME)
+     *     .q("python")
+     *     .source(s -> s
+     *         .filter(f -> f
+     *             .includes("name")
+     *         )
+     *     )
+     * );
+     * </pre>
+     * term 查询，返回字段排除 id：
+     * <pre>
+     * SearchRequest searchRequest = SearchRequest.of(sr -> sr
+     *     .index(INDEX_NAME)
+     *     .query(q -> q
+     *         .term(t -> t
+     *             .field("name")
+     *             .value("张三")
+     *         )
+     *     )
+     *     .source(s -> s
+     *         .filter(f -> f
+     *             .excludes("id")
+     *         )
+     *     )
+     * );
+     * </pre>
+     * 多字段查询
+     * <pre>
+     * SearchRequest searchRequest = SearchRequest.of(sr -> sr
+     *     .index(INDEX_NAME)
+     *     .query(q -> q
+     *         .multiMatch(m -> m
+     *             .fields("name", "city", "description")
+     *             .query("武汉 python")
+     *         )
+     *     )
+     *     .source(s -> s
+     *         .filter(f -> f
+     *             .excludes("id")
+     *         )
+     *     )
+     * );
+     * </pre>
      *
      * @param searchRequest 检索条件
      * @param tClass        返回的对象类型
      * @return 文档对象集合
-     * @throws IOException
      */
     public <T> List<T> search(SearchRequest searchRequest, Class<T> tClass) throws IOException {
         SearchResponse<T> response = getClient().search(searchRequest, tClass);
